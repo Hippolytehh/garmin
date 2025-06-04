@@ -3,8 +3,8 @@ import config
 import clr
 import os
 import System.Reflection # type: ignore
-from Dynastream.Fit import * # type: ignore
 clr.AddReference(os.path.abspath(config.FIT_DLL))
+from Dynastream.Fit import * # type: ignore
 
 def create_workout_step_swim(
         message_index: int, 
