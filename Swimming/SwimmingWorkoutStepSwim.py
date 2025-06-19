@@ -25,7 +25,7 @@ def create_workout_step_swim(
     if notes:
         workout_step_mesg.SetNotes(notes)
 
-    workout_step_mesg.SetIntensity(intensity);
+    workout_step_mesg.SetIntensity(intensity)
 
     workout_step_mesg.SetDurationType(WktStepDuration.Distance) # type: ignore
     workout_step_mesg.SetDurationDistance(distance)
