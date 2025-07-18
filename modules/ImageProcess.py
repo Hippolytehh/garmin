@@ -5,6 +5,14 @@ import cv2
 from PIL import Image
 import numpy as np
 
+from InstructionsProcess import InstructionsProcess
+
+from multiprocessing import Pool
+def p(img_path):
+    return ImageProcess(
+        path= img_path
+    )
+
 class ImageProcess:
 
     def __init__(self, path: str, instructions: List[str]= []):
@@ -45,6 +53,12 @@ class ImageProcess:
                 text = pytesseract.image_to_string(pil_img)
 
                 self.instructions.append(text.replace('\n', '').replace(' ', '').strip())
+        
+        # print(self.instructions)
+
+        instructions_process = InstructionsProcess(self.instructions)
+
+        # return self.instructions
 
 class BatchImageProcess:
     """
@@ -77,8 +91,6 @@ class BatchImageProcess:
                     }
                 )
 
-        print(self.img_paths)
-
         self.img_paths = list(
             sorted(
                 self.img_paths,
@@ -86,19 +98,12 @@ class BatchImageProcess:
             )
         )
 
-        print(self.img_paths)
-
-        self.img_processes = [
-            ImageProcess(path) for path in self.img_paths
-        ]
-    
-    def print_all_instructions(self):
-
-        for img_process in self.img_processes:
-            print(
-                img_process.instructions
+        with Pool() as pool:
+            self.results= pool.map(
+                p, 
+                self.img_paths
             )
-
+            
 if __name__ == '__main__':
 
     batch_image_process = BatchImageProcess(
